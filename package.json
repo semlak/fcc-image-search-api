@@ -16,7 +16,9 @@
     "Express",
     "Node",
     "javascript",
-    "boilerplate"
+    "boilerplate", 
+    "kerberos", 
+    "body-parser"
   ],
   "scripts": {
   "start": "node server.js"
