@@ -1,6 +1,14 @@
 'use strict';
 
+//used https://www.npmjs.com/package/mongoose-auto-increment to help with auto incrementing object ids in database
+
+
 // server.js
+
+
+var log = function(data) {
+	console.log(data);
+};
 
 // base setup
 var express = require('express');
@@ -8,20 +16,20 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var url = require('url');
+var path = require('path');
 var port = process.env.PORT || 8080;
+
 //app.engine('.html', require('jade'));
-app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
-var log = function(data) {
-	console.log(data);
-};
+app.set('views', path.join(__dirname, '/app/views'));
+app.set('view engine', 'jade');
 
-var port = process.env.PORT || 8080;
+
+
 
 //app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(bodyParser.json());
 require('dotenv').load();
 var connection = mongoose.connect(process.env.MONGO_URI);
@@ -30,11 +38,24 @@ autoIncrement.initialize(connection);
 
 var ShortenedURL = require('./app/models/shortenedURLModel');
 
-
+/*
 app.get('/', function(req, res) {
-	res.render('index.html')
+	// res.render('index.html')
+	res.render('index', {title: 'Hey', message: 'Hello Xena'});
 	res.end();
 });
+*/
+
+app.get('/', function (req, res) {
+	console.log("rendering homepage");
+	//get page data
+	var pageData = require('./app/views/indexPageData.json');
+	var appURL = req.protocol + '://' + req.headers.host;
+	pageData = JSON.parse(JSON.stringify(pageData).replace(/APPURL/g, appURL));
+	res.render('index', pageData);
+	res.end();
+});
+
 
 app.get('/urls/', function(req, res) {
 	log('listing all shortened urls stored in database');
@@ -46,7 +67,9 @@ app.get('/urls/', function(req, res) {
 	});	
 });
 
-app.get('/:url_id', function(req, res) {
+app.get('/blah:url_id/', function(req, res) {
+	log('attempting to load shorturl ' + req.params.url_id);
+	/*
 	ShortenedURL.findById(req.params.url_id, function(err, shortenedURL) {
 		if (err) {
 			res.send(err);
@@ -55,7 +78,7 @@ app.get('/:url_id', function(req, res) {
 		res.redirect(shortenedURL.original_url);
 		res.end();
 	});
-
+*/
 
 });
 
