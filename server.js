@@ -39,8 +39,9 @@ var apiKey = process.env.API_KEY
 
 
 var connection = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/image-search');
-
-
+if (process.env.MONGOLAB_URI) {
+	console.log("heroku mongo_lap uri is " , process.env.MONGOLAB_URI);
+}
 
 var route = require('./app/controllers/imageSearch.js');
 route.controller(app);
