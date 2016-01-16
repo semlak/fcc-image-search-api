@@ -34,11 +34,11 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-require('dotenv').load();
+var dotenv = require('dotenv').load() || null;
 var apiKey = process.env.API_KEY
 
 
-var connection = mongoose.connect(process.env.MONGO_URI);
+var connection = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/image-search');
 
 
 
