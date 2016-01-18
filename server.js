@@ -12,7 +12,9 @@ var log = function(data) {
 var fs = require('fs');
 // console.log(fs.lstatSync('./.env'));	
 // base setup
-
+// var pageData = require('./app/views/indexPageData.js');
+// console.log(pageData);
+// return 1 ;
 
 var express = require('express');
 var app = express();
@@ -44,17 +46,17 @@ try {
 
 catch (e) {
 	// console.log(e);
-	if (e == 'ENOENT')
-	console.log("caught error. file '.env' is not present. It does not need to be present on a heroku application");
+	if (e == 'ENOENT') {
+		console.log("caught error. file '.env' is not present. It does not need to be present on a heroku application");
+	}
+	else {
+		throw e;
+	}
 }
-
 var apiKey = process.env.API_KEY
 
 
 var connection = mongoose.connect(process.env.MONGOLAB_URI || process.env.MONGO_URI || 'mongodb://localhost/image-search');
-if (process.env.MONGOLAB_URI) {
-	console.log("heroku mongo_lap uri is " , process.env.MONGOLAB_URI);
-}
 
 var route = require('./app/controllers/imageSearch.js');
 route.controller(app);

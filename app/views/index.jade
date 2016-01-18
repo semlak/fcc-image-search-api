@@ -28,5 +28,7 @@ html( lang="en" )
 							h4= "Input:"
 								p.bs-callout.bs-callout-default.code-callout.example= example.input
 							h4= example.action
-								p.bs-callout.bs-callout-default.code-callout.example= example.output
+								- var output ;
+								- output = ((typeof example.output) == 'object') ? JSON.stringify(example.output) : example.output
+								p.bs-callout.bs-callout-default.code-callout.example= output
 

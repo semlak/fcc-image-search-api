@@ -11,13 +11,11 @@ module.exports.controller = function(app) {
 	//home page with instructions
 	app.get('/', function (req, res) {
 		console.log("rendering homepage");
-		//get page data
-		var pageData = require('../views/indexPageData.json');
 		var appURL = req.protocol + '://' + req.headers.host;
-		pageData = JSON.parse(JSON.stringify(pageData).replace(/APPURL/g, appURL));
+		process.env.APPURL= appURL
+		var pageData = require('../views/indexPageData.js');
 		res.render('index', pageData);
 		res.end();
-		// req.connection.destroy();
 	});
 
 
