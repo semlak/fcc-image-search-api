@@ -9,7 +9,11 @@ var log = function(data) {
 	console.log(data);
 };
 
+var fs = require('fs');
+// console.log(fs.lstatSync('./.env'));	
 // base setup
+
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -34,7 +38,16 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var dotenv = require('dotenv').load() || null;
+try {
+	var dotenv = require('dotenv').load();
+}
+
+catch (e) {
+	// console.log(e);
+	if (e == 'ENOENT')
+	console.log("caught error. file '.env' is not present. It does not need to be present on a heroku application");
+}
+
 var apiKey = process.env.API_KEY
 
 
